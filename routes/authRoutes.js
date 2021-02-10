@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 router.post(
-  '/signup',
+  '/register',
   passport.authenticate('signup', {
     session: false
   }),
@@ -22,6 +22,7 @@ router.post(
   }
 );
 
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwMjNkYzhmMmZjNTYyMWM2ODdlMTQ4YiIsImVtYWlsIjoiOUB0ZXN0LmNvbSJ9LCJpYXQiOjE2MTI5NjI5OTV9.5tpfQHVeuw75dacF_D7EsnFB-4p9l4zQoQq-c6L91MU
 
 
 router.post(
@@ -51,7 +52,6 @@ router.post(
               const token = jwt.sign({
                 user: body
               }, process.env.TOKEN_SECRET);
-
               return res.json({
                 token
               });

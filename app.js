@@ -3,15 +3,16 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const Verify = require('./routes/verifyRoutes');
 
 dotenv.config();
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 mongoose.set("useCreateIndex", true);
 
 
-require('./auth/auth');
+require('./controller/auth');
 
-const routes = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
 const secureRoute = require('./routes/secure-routes');
 const postRoute = require('./routes/postRoute');
 
@@ -20,13 +21,16 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/', routes);
-app.use('/posts', passport.authenticate('jwt', { session: false }), postRoute);
+
+
+
+// const verify = passport.authenticate('jwt', {session: false});
 
 // Plug in the JWT strategy as a middleware so only verified users can access this route.
-app.use('/user', passport.authenticate('jwt', { session: false }), secureRoute);
+app.use('/', authRoutes);
+app.use('/posts',Verify,  postRoute)
+app.use('/user', Verify , secureRoute);
 
-
-app.listen(3000, () => {
-  console.log('Server started.')
+app.listen(5000, () => {
+  console.log('Server started. 5000')
 });
